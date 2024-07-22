@@ -69,19 +69,19 @@
                 width: 100%;
             }
         }
-.box{
-    width: 100%;
-    text-align:center;
-}
-/* Footer styling */
-.footer {
+        .box {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Footer styling */
+        .footer {
             position: fixed;
-            bottom: 0;
+            bottom: 15px;
             width: 100%;
             text-align: center;
             padding: 10px;
-            background-color: #e3eef3;
-            color: #ff0000;
+            color: #000000;
             font-size: 15px;
             font-weight: bold;
             transition: background-color 0.5s, color 0.8s;
@@ -89,24 +89,25 @@
 
         .footer:hover {
             background-color: transparent;
-            color: #03abff;
-            rotate: 2deg;
-}
+            color: #ff0303;
+            
+        }
     </style>
     <script src="https://apis.google.com/js/api.js"></script>
 </head>
 <body>
     <div class="box">
-    <input type="text" id="search" placeholder="Type your name..."></div>
+        <input type="text" id="search" placeholder="Type your name...">
+    </div>
     <div id="data"></div>
-    <div class="footer">Made by Muzammal Hussain</div>
+    <div class="footer">Made 💗 by Muzammal Hussain</div>
     <script>
         let sheetData = [];
         let filteredData = [];
 
         function initClient() {
             gapi.client.init({
-            'apiKey': 'AIzaSyClImHPq-80RmFQRpICEL2406PD-EWYfPs',
+                'apiKey': 'AIzaSyClImHPq-80RmFQRpICEL2406PD-EWYfPs',
                 'discoveryDocs': ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
             }).then(function () {
                 return gapi.client.sheets.spreadsheets.values.get({
@@ -166,11 +167,15 @@
 
         document.getElementById('search').addEventListener('input', function() {
             const query = this.value.toLowerCase();
-            filteredData = sheetData.filter((row, index) => {
-                if (index === 0) return false;  // Skip header row
-                return row.some(cell => cell.toLowerCase().startsWith(query));
-            });
-            displayData(filteredData);
+            if (query === '') {
+                displayData([]);  // If the search box is empty, show no data
+            } else {
+                filteredData = sheetData.filter((row, index) => {
+                    if (index === 0) return false;  // Skip header row
+                    return row.some(cell => cell.toLowerCase().startsWith(query));
+                });
+                displayData(filteredData);
+            }
         });
 
         gapi.load('client', initClient);
